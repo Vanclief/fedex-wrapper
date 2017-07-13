@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:ns="http://fedex.com/ws/officeprintonline/v1" xmlns:s1="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://fedex.com/ws/officeprintonline/v1" name="OfficePrintOnlineServiceDefinitions">
+	<types>
+		<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://fedex.com/ws/officeprintonline/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:element name="UploadLocationRequest" type="ns:UploadLocationRequest"/>
+			<xs:element name="UploadLocationReply" type="ns:UploadLocationReply"/>
+			<xs:complexType name="UploadLocationRequest">
+				<xs:annotation>
+					<xs:documentation>The data needed to authorize a file upload to FedEx Office from a web service client</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="WebAuthenticationDetail" type="ns:WebAuthenticationDetail" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>The descriptive data to be used in authentication of the sender's identity (and right to use FedEx web services).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClientDetail" type="ns:ClientDetail">
+						<xs:annotation>
+							<xs:documentation>The descriptive data identifying the client submitting the transaction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TransactionDetail" type="ns:TransactionDetail" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The descriptive data for this customer transaction. The TransactionDetail from the request is echoed back to the caller in the corresponding reply.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Version" type="ns:VersionId" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Identifies the version/level of a service operation expected by a caller (in each request) and performed by the callee (in each reply).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="UploadLocationReply">
+				<xs:annotation>
+					<xs:documentation>The descriptive data returned for a FedEx Office Print Online file upload authorization request.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="HighestSeverity" type="ns:NotificationSeverityType">
+						<xs:annotation>
+							<xs:documentation>Identifies the highest severity encountered when executing the request; in order from high to low: FAILURE, ERROR, WARNING, NOTE, SUCCESS.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Notifications" type="ns:Notification" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>The descriptive data detailing the status of a sumbitted transaction.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TransactionDetail" type="ns:TransactionDetail" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Descriptive data that governs data payload language/translations.  The TransactionDetail from the request is echoed back to the caller in the corresponding reply. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Version" type="ns:VersionId" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the version/level of a service operation expected by a caller (in each request) and performed by the callee (in each reply).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="UploadUrl" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Url used by client to upload file.</xs:documentation>
+							</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="0" name="UploadStatusUrl" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Url used by client to monitor upload progress and then open PrintOnline.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WebAuthenticationDetail">
+				<xs:annotation>
+					<xs:documentation>Used in authentication of the sender's identity.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="UserCredential" type="ns:WebAuthenticationCredential" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Credential used to authenticate a specific software application. This value is provided by FedEx after registration.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="WebAuthenticationCredential">
+				<xs:annotation>
+					<xs:documentation>Two part authentication string used for the sender's identity.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="Key" type="xs:string" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Publicly known part of authentication key used for authentication. This value is provided by FedEx after registration.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>16</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Password" type="xs:string" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Secret part of authentication key used for authentication. This value is provided by FedEx after registration.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>25</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ClientDetail">
+				<xs:annotation>
+					<xs:documentation>The descriptive data identifying the client submitting the transaction.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="ClientProductId" type="xs:string" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Identifies the product.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>4</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ClientProductVersion" type="xs:string" minOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Identifies the product version.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>4</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IntegratorId" minOccurs="1" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Identifies the calling integrator.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Localization" type="ns:Localization" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Governs any future language/translations used for human-readable Notification.localizedMessages in responses to the request containing this ClientDetail object. Different requests from the same client may contain different Localization data. (Contrast with TransactionDetail.localization, which governs data payload language/translation.)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Notification">
+				<xs:annotation>
+					<xs:documentation>The descriptive data regarding the results of the submitted transaction.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="Severity" type="ns:NotificationSeverityType">
+						<xs:annotation>
+							<xs:documentation>Identifies the severity of the Notification item. See NotificationSeverityType for list of returned values.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Source" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Identifies the source - what FedEx system, sub-system, or component generated the Notification item.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Code" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the error code generated by the FedEx system, sub-system or component.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>8</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Message" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the error message text.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>255</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LocalizedMessage" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the error message text in the localization requested. Currently not supported.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MessageParameters" type="ns:NotificationParameter" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Used internally by FedEx systems for message translation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="TransactionDetail">
+				<xs:annotation>
+					<xs:documentation>The descriptive data that governs data payload language/translations.</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="CustomerTransactionId" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Identifies a customer-supplied unique identifier for this transaction. It is returned in the reply message to aid in matching requests to replies.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>40</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Localization" type="ns:Localization" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Governs any future language/translations applied to the data payload (contrasted with ClientDetail.localization, which governs Notification.localizedMessage language selection).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Localization">
+				<xs:annotation>
+					<xs:documentation>The descriptive data for the local language and locale (i.e. country).</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element name="LanguageCode" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Identifies the language to use for human-readable messages.</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>2</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LocaleCode" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the locale (i.e.  country code).</xs:documentation>
+							<xs:appinfo>
+								<xs:MaxLength>2</xs:MaxLength>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="VersionId">
+				<xs:annotation>
+					<xs:documentation>Identifies the version/level of a service operation expected by a caller (in each request) and performed by the callee (in each reply).</xs:documentation>
+				</xs:annotation>
+				<xs:sequence>
+					<xs:element minOccurs="1" name="ServiceId" type="xs:string" fixed="opol">
+						<xs:annotation>
+							<xs:documentation>Identifies a system or sub-system which performs an operation.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="1" name="Major" type="xs:int" fixed="1">
+						<xs:annotation>
+							<xs:documentation>Identifies the service business level.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="1" name="Intermediate" type="xs:int" fixed="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the service interface level.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element minOccurs="1" name="Minor" type="xs:int" fixed="0">
+						<xs:annotation>
+							<xs:documentation>Identifies the service code level.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="NotificationParameter">
+				<xs:sequence>
+					<xs:element name="Id" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Name identifiying the type of the data in the element 'Value'</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Value" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The value that was used as the replacement parameter.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="NotificationSeverityType">
+				<xs:annotation>
+					<xs:documentation>Identifies the set of severity values for a Notification.</xs:documentation>
+				</xs:annotation>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="ERROR"/>
+					<xs:enumeration value="FAILURE"/>
+					<xs:enumeration value="NOTE"/>
+					<xs:enumeration value="SUCCESS"/>
+					<xs:enumeration value="WARNING"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+	</types>
+	<message name="UploadLocationRequest">
+		<part name="UploadLocationRequest" element="ns:UploadLocationRequest">
+			<documentation>Defines the request data element of the operation.</documentation>
+		</part>
+	</message>
+	<message name="UploadLocationReply">
+		<part name="UploadLocationReply" element="ns:UploadLocationReply">
+			<documentation>Defines the response data element of the operation.</documentation>
+		</part>
+	</message>
+	<portType name="OfficePrintOnlineServicePortType">
+		<documentation>This element describes the web service, the operations performed and the messages involved in the operation.</documentation>
+		<operation name="getUploadLocation" parameterOrder="UploadLocationRequest">
+			<input message="ns:UploadLocationRequest">
+				<documentation>Defines the input message type for the getUploadLocation operation.</documentation>
+			</input>
+			<output message="ns:UploadLocationReply">
+				<documentation>Defines the output message type for the getUploadLocation operation.</documentation>
+			</output>
+		</operation>
+	</portType>
+	<binding name="OfficePrintOnlineServiceSoapBinding" type="ns:OfficePrintOnlineServicePortType">
+		<s1:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="getUploadLocation">
+			<s1:operation soapAction="getUploadLocation" style="document"/>
+			<input>
+				<s1:body use="literal"/>
+			</input>
+			<output>
+				<s1:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="OfficePrintOnlineService">
+		<port name="OfficePrintOnlineServicePort" binding="ns:OfficePrintOnlineServiceSoapBinding">
+			<s1:address location="https://wsbeta.fedex.com:443/web-services/office"/>
+		</port>
+	</service>
+</definitions>
