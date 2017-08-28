@@ -16,7 +16,9 @@ def ship(
     length,
     width,
     height,
-    weight
+    weight,
+    customer_reference_value='',
+    order_reference_value=''
 ):
     """ Creates a new shipment with fedex, with the provided data.
 
@@ -94,9 +96,19 @@ def ship(
                                     Height=height,
                                     Units='CM')
 
+    customer_reference_type = factory.CustomerReferenceType('CUSTOMER_REFERENCE')
+    customer_reference = factory.CustomerReference(CustomerReferenceType=customer_reference_type,
+                                                   Value=customer_reference_value)
+
+    order_reference_type = factory.CustomerReferenceType('P_O_NUMBER')
+    order_reference = factory.CustomerReference(CustomerReferenceType=order_reference_type,
+                                                Value=order_reference_value)
+    
+    customer_references = [customer_reference, order_reference]
     requested_package_line_item = factory.RequestedPackageLineItem(SequenceNumber='1',
                                                                    Weight=weight,
-                                                                   Dimensions=dimensions)
+                                                                   Dimensions=dimensions,
+                                                                   CustomerReferences=customer_references)
 
     requested_package_line_items = [requested_package_line_item]
 

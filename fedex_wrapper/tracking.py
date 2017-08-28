@@ -34,6 +34,13 @@ def track(production,
 
     selection_detail = factory.TrackSelectionDetail(PackageIdentifier=package_identifier)
 
+    print(production)
+    print(key)
+    print(password)
+    print(account_number)
+    print(meter_number)
+    print(tracking_number)
+
     return(client.service.track(WebAuthenticationDetail=web_auth_detail,
                                 ClientDetail=client_detail,
                                 Version=version,
