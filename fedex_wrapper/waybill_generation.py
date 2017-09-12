@@ -18,7 +18,7 @@ def ship(
     height,
     weight,
     customer_reference_value='',
-    order_reference_value=''
+    order_reference_value='',
 ):
     """ Creates a new shipment with fedex, with the provided data.
 
@@ -103,14 +103,31 @@ def ship(
     order_reference_type = factory.CustomerReferenceType('P_O_NUMBER')
     order_reference = factory.CustomerReference(CustomerReferenceType=order_reference_type,
                                                 Value=order_reference_value)
-    
+
     customer_references = [customer_reference, order_reference]
-    requested_package_line_item = factory.RequestedPackageLineItem(SequenceNumber='1',
-                                                                   Weight=weight,
-                                                                   Dimensions=dimensions,
-                                                                   CustomerReferences=customer_references)
+    requested_package_line_item = factory.RequestedPackageLineItem(
+        SequenceNumber='1',
+        Weight=weight,
+        Dimensions=dimensions,
+        CustomerReferences=customer_references
+    )
 
     requested_package_line_items = [requested_package_line_item]
+
+    shipment_special_service_type = factory.ShipmentSpecialServiceType('HOLD_AT_LOCATION')
+
+    contact_and_address = factory.ContactAndAddress(Contact=r_contact,
+                                                    Address=r_address)
+
+    hold_at_location_detail = factory.HoldAtLocationDetail(
+        PhoneNumber=recipient_contact['PhoneNumber'],
+        LocationContactAndAddress=contact_and_address
+    )
+
+    special_serices_requested = factory.ShipmentSpecialServicesRequested(
+        SpecialServiceTypes=[shipment_special_service_type],
+        HoldAtLocationDetail=hold_at_location_detail
+    )
 
     requested_shipment = factory.RequestedShipment(
        ShipTimestamp=ship_timestamp,
@@ -122,7 +139,8 @@ def ship(
        ShippingChargesPayment=shipping_charges_payment,
        LabelSpecification=label_specification,
        RequestedPackageLineItems=requested_package_line_items,
-       PackageCount=package_count
+       PackageCount=package_count,
+       SpecialServicesRequested=special_serices_requested
     )
 
     return client.service.processShipment(WebAuthenticationDetail=web_auth_detail,
